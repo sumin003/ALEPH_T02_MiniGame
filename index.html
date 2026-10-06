@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lost Stars Rescue</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="top">
+      <div>
+        <p class="eyebrow">DEEP SPACE RESCUE</p>
+        <h1>LOST STARS</h1>
+      </div>
+
+      <div class="hud">
+        <span>LEVEL <b id="level">1 / 10</b></span>
+        <span>STAR <b id="rescued">0 / 5</b></span>
+        <span>MISS <b id="miss">0 / 2</b></span>
+        <span>HIT <b id="hit">0 / 2</b></span>
+
+        <button id="sound" class="hud-btn" type="button">
+          🔊 SOUND
+        </button>
+
+        <button id="pause" class="hud-btn" type="button" disabled>
+          PAUSE
+        </button>
+      </div>
+    </header>
+
+    <section class="journey">
+      <div class="journey-head">
+        <div>
+          <strong>SPACE JOURNEY</strong>
+          <p id="journeyStatus">
+            클리어 0 / 10 · 현재 LEVEL 1
+          </p>
+        </div>
+
+        <button id="newGame" type="button">
+          NEW GAME
+        </button>
+      </div>
+
+      <div id="levelMap" class="level-map"></div>
+    </section>
+
+    <section class="mission">
+      <span id="mission">LEVEL 1 · STAR 0/5</span>
+
+      <div class="bar">
+        <div id="progress"></div>
+      </div>
+    </section>
+
+    <section
+      id="game"
+      class="game"
+      tabindex="0"
+      aria-label="잃어버린 별 구출 게임"
+    >
+      <canvas id="scene" aria-hidden="true"></canvas>
+
+      <div id="waveBanner" class="wave-banner" aria-live="polite"></div>
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+
+      <div id="overlay" class="overlay">
+        <div class="panel">
+          <p class="eyebrow">RESCUE MISSION</p>
+
+          <h2 id="title">
+            잃어버린 별을 구출하세요
+          </h2>
+
+          <p id="desc">
+            방향키로 우주선을 움직여 별을 구출하고 운석을 피하세요.
+          </p>
+
+          <p class="keys">
+            ← → LANE MOVE
+          </p>
+
+          <button id="start" type="button">
+            START RESCUE
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <p class="help">
+      자동 전진 · ← → 레인 이동 · 별 MISS 2회 또는 운석 HIT 2회 시 GAME OVER
+    </p>
+  </main>
+
+  <audio
+    id="bgm"
+    src="sounds/LostStars_bg.mp3"
+    preload="auto"
+    loop
+  ></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
