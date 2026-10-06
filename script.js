@@ -38,15 +38,12 @@
     { stars: 5, speed: 0.25, gap: 1.25, lanes: 5 },
     { stars: 6, speed: 0.27, gap: 1.20, lanes: 5 },
     { stars: 7, speed: 0.29, gap: 1.15, lanes: 5 },
-
     { stars: 8, speed: 0.31, gap: 1.10, lanes: 6 },
     { stars: 9, speed: 0.33, gap: 1.05, lanes: 6 },
     { stars: 10, speed: 0.35, gap: 1.00, lanes: 6 },
-
     { stars: 11, speed: 0.37, gap: 0.95, lanes: 7 },
     { stars: 12, speed: 0.39, gap: 0.90, lanes: 7 },
     { stars: 13, speed: 0.41, gap: 0.85, lanes: 7 },
-
     { stars: 15, speed: 0.43, gap: 0.80, lanes: 8 }
   ];
 
@@ -109,6 +106,10 @@
         ? normalizeSave(JSON.parse(raw))
         : freshSave();
     } catch {
+      try {
+        localStorage.removeItem(SAVE_KEY);
+      } catch {}
+
       return freshSave();
     }
   }
@@ -277,7 +278,6 @@
     if (!audio) return;
 
     const start = audio.currentTime + delay;
-
     const oscillator = audio.createOscillator();
     const gain = audio.createGain();
 
@@ -285,12 +285,10 @@
     oscillator.frequency.setValueAtTime(frequency, start);
 
     gain.gain.setValueAtTime(0.0001, start);
-
     gain.gain.exponentialRampToValueAtTime(
       volume,
       start + 0.015
     );
-
     gain.gain.exponentialRampToValueAtTime(
       0.0001,
       start + duration
@@ -466,11 +464,6 @@
   }
 
   function waveBigRock() {
-    if (laneCount < 3) {
-      waveRock();
-      return;
-    }
-
     let starts = Array.from(
       { length: laneCount - 1 },
       (_, i) => i
@@ -488,7 +481,6 @@
     const start = randomItem(starts);
 
     spawnBigRock(start);
-
     lastBigStart = start;
   }
 
@@ -545,7 +537,6 @@
 
     dangerWarning = false;
     dangerMode = true;
-
     dangerTimer = config.duration;
     dangerSpawnTimer = 0;
     dangerSpawnCount = 0;
@@ -680,7 +671,6 @@
     }
 
     dangerSpawnCount++;
-
     trySpawnDangerStar();
   }
 
@@ -985,13 +975,10 @@
     return {
       left:
         player.x * W - 8 * scale,
-
       right:
         player.x * W + 8 * scale,
-
       top:
         player.y * H - 16 * scale,
-
       bottom:
         player.y * H + 12 * scale
     };
@@ -1039,12 +1026,14 @@
         laneWidth -
       laneWidth * 0.10;
 
-    const height = Math.min(
-      66,
-      H * 0.10
-    );
+    const height =
+      Math.min(
+        66,
+        H * 0.10
+      );
 
-    const y = rock.y * H;
+    const y =
+      rock.y * H;
 
     return {
       left,
@@ -1061,10 +1050,11 @@
     const rect =
       getBigRockRect(rock);
 
-    const padX = Math.min(
-      14,
-      rect.width * 0.06
-    );
+    const padX =
+      Math.min(
+        14,
+        rect.width * 0.06
+      );
 
     const padY =
       rect.height * 0.18;
@@ -1119,8 +1109,7 @@
         continue;
       }
 
-      star.y +=
-        speed * dt;
+      star.y += speed * dt;
 
       const horizontal =
         Math.abs(
@@ -1133,12 +1122,10 @@
         );
 
       if (
-        horizontal <
-          starHorizontal &&
+        horizontal < starHorizontal &&
         vertical < 0.065
       ) {
         star.active = false;
-
         rescued++;
 
         soundStar();
@@ -1161,7 +1148,6 @@
         MISS_LINE_Y
       ) {
         star.active = false;
-
         misses++;
 
         soundMiss();
@@ -1188,8 +1174,7 @@
         continue;
       }
 
-      rock.y +=
-        speed * dt;
+      rock.y += speed * dt;
 
       if (rock.y > 1.12) {
         rock.active = false;
@@ -1202,7 +1187,6 @@
 
       if (rockHitsPlayer(rock)) {
         rock.active = false;
-
         hits++;
         invincible = 0.90;
 
@@ -1283,18 +1267,14 @@
         fireworks.push({
           x,
           y,
-
           vx:
             Math.cos(angle) *
             speed,
-
           vy:
             Math.sin(angle) *
             speed,
-
           life:
             rand(1.5, 2.8),
-
           size:
             rand(2, 6)
         });
@@ -1359,7 +1339,6 @@
     paused = false;
 
     clearCountdown();
-
     cancelAnimationFrame(raf);
 
     pauseBGM();
@@ -1400,7 +1379,6 @@
     paused = false;
 
     clearCountdown();
-
     cancelAnimationFrame(raf);
 
     pauseBGM();
@@ -1569,15 +1547,8 @@
       );
     }
 
-    ctx.fillStyle =
-      gradient;
-
-    ctx.fillRect(
-      0,
-      0,
-      W,
-      H
-    );
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, W, H);
 
     for (const dot of dust) {
       ctx.globalAlpha =
@@ -1616,12 +1587,7 @@
           0.045
         })`;
 
-      ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-      );
+      ctx.fillRect(0, 0, W, H);
     }
   }
 
@@ -1944,92 +1910,6 @@
     } else {
       drawNormalRock(rock);
     }
-  }
-
-  function getBigRockHitbox(rock) {
-    const rect =
-      getBigRockRect(rock);
-
-    const padX =
-      Math.min(
-        14,
-        rect.width * 0.06
-      );
-
-    const padY =
-      rect.height * 0.18;
-
-    return {
-      left: rect.left + padX,
-      right: rect.right - padX,
-      top: rect.top + padY,
-      bottom: rect.bottom - padY
-    };
-  }
-
-  function getNormalRockHitbox(rock) {
-    const x = rock.x * W;
-    const y = rock.y * H;
-
-    const radius =
-      getNormalRockRadius();
-
-    const hitRadius =
-      radius * 0.70;
-
-    return {
-      left: x - hitRadius,
-      right: x + hitRadius,
-      top: y - hitRadius,
-      bottom: y + hitRadius
-    };
-  }
-
-  function getPlayerHitbox() {
-    const scale =
-      Math.max(
-        0.72,
-        Math.min(
-          1,
-          5 / laneCount
-        )
-      );
-
-    return {
-      left:
-        player.x * W -
-        8 * scale,
-
-      right:
-        player.x * W +
-        8 * scale,
-
-      top:
-        player.y * H -
-        16 * scale,
-
-      bottom:
-        player.y * H +
-        12 * scale
-    };
-  }
-
-  function boxesOverlap(a, b) {
-    return (
-      a.left < b.right &&
-      a.right > b.left &&
-      a.top < b.bottom &&
-      a.bottom > b.top
-    );
-  }
-
-  function rockHitsPlayer(rock) {
-    return boxesOverlap(
-      getPlayerHitbox(),
-      rock.big
-        ? getBigRockHitbox(rock)
-        : getNormalRockHitbox(rock)
-    );
   }
 
   function drawShip() {
@@ -2497,7 +2377,8 @@
 
     desc.innerHTML = `
       우주선은 자동으로 앞으로 이동합니다.<br>
-      ← → 방향키를 사용해 좌우 레인으로 이동하세요.<br>
+      PC에서는 ← → 방향키로 이동하세요.<br>
+      모바일에서는 게임 화면의 왼쪽 또는 오른쪽을 터치해 이동하세요.<br>
       내려오는 별을 구출하고 운석을 피해야 합니다.<br>
       별을 2번 놓치거나 운석에 2번 충돌하면 GAME OVER입니다.<br>
       필요한 별을 모두 구출하면 다음 LEVEL로 이동합니다.
@@ -2610,6 +2491,37 @@
       if (
         event.key ===
         "ArrowLeft"
+      ) {
+        moveLeft();
+      } else {
+        moveRight();
+      }
+    }
+  );
+
+  game.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (
+        event.pointerType !== "touch" ||
+        !running ||
+        paused ||
+        resumeCountdown ||
+        successMode
+      ) {
+        return;
+      }
+
+      const rect =
+        game.getBoundingClientRect();
+
+      const touchX =
+        event.clientX -
+        rect.left;
+
+      if (
+        touchX <
+        rect.width / 2
       ) {
         moveLeft();
       } else {

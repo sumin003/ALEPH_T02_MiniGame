@@ -329,6 +329,8 @@ button:focus-visible {
   box-shadow:
     0 24px 65px
     rgba(0, 0, 0, .28);
+
+  touch-action: manipulation;
 }
 
 .game:focus-visible {
@@ -645,7 +647,7 @@ button:focus-visible {
   .feedback {
     font-size: 15px;
   }
-  
+
   .level-dot {
     width: 36px;
     height: 36px;
