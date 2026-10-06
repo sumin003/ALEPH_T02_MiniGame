@@ -253,9 +253,7 @@
   }
 
   function pauseBGM() {
-    if (bgm) {
-      bgm.pause();
-    }
+    if (bgm) bgm.pause();
   }
 
   function resetBGM() {
@@ -383,8 +381,7 @@
 
     if (lastStarLane !== -1) {
       const separated = candidates.filter(
-        (lane) =>
-          Math.abs(lane - lastStarLane) >= 2
+        (lane) => Math.abs(lane - lastStarLane) >= 2
       );
 
       if (separated.length) {
@@ -404,9 +401,7 @@
       }
 
       const minimum = Math.min(
-        ...candidates.map(
-          (lane) => counts[lane]
-        )
+        ...candidates.map((lane) => counts[lane])
       );
 
       const lessUsed = candidates.filter(
@@ -521,9 +516,7 @@
   }
 
   function startDangerWave() {
-    if (dangerMode || dangerWarning) {
-      return;
-    }
+    if (dangerMode || dangerWarning) return;
 
     dangerWarning = true;
     dangerTimer = 0.7;
@@ -566,36 +559,24 @@
   }
 
   function trySpawnDangerStar() {
-    if (dangerStarsSpawned >= 2) {
-      return;
-    }
+    if (dangerStarsSpawned >= 2) return;
 
-    const chance =
-      level >= 9
-        ? 0.22
-        : 0.28;
+    const chance = level >= 9 ? 0.22 : 0.28;
 
-    if (Math.random() > chance) {
-      return;
-    }
+    if (Math.random() > chance) return;
 
     const blocked = getDangerBlockedLanes();
 
     let candidates = Array.from(
       { length: laneCount },
       (_, i) => i
-    ).filter(
-      (lane) => !blocked.has(lane)
-    );
+    ).filter((lane) => !blocked.has(lane));
 
-    if (!candidates.length) {
-      return;
-    }
+    if (!candidates.length) return;
 
     if (lastStarLane !== -1) {
       const separated = candidates.filter(
-        (lane) =>
-          Math.abs(lane - lastStarLane) >= 2
+        (lane) => Math.abs(lane - lastStarLane) >= 2
       );
 
       if (separated.length) {
@@ -617,12 +598,12 @@
     let available = Array.from(
       { length: laneCount },
       (_, i) => i
-    ).filter(
-      (lane) => !blocked.has(lane)
-    );
+    ).filter((lane) => !blocked.has(lane));
 
-    const maxCurrentlyBlocked =
-      Math.max(1, laneCount - 2);
+    const maxCurrentlyBlocked = Math.max(
+      1,
+      laneCount - 2
+    );
 
     const remainingCapacity =
       maxCurrentlyBlocked - blocked.size;
@@ -685,9 +666,7 @@
       return;
     }
 
-    if (!dangerMode) {
-      return;
-    }
+    if (!dangerMode) return;
 
     const config = dangerSettings();
 
@@ -756,9 +735,7 @@
   }
 
   function spawnWave() {
-    if (dangerMode || dangerWarning) {
-      return;
-    }
+    if (dangerMode || dangerWarning) return;
 
     const type = chooseWaveType();
 
@@ -883,7 +860,6 @@
     }
 
     void feedback.offsetWidth;
-
     feedback.classList.add("show");
   }
 
@@ -900,7 +876,6 @@
     }
 
     void waveBanner.offsetWidth;
-
     waveBanner.classList.add("show");
   }
 
@@ -973,14 +948,10 @@
     );
 
     return {
-      left:
-        player.x * W - 8 * scale,
-      right:
-        player.x * W + 8 * scale,
-      top:
-        player.y * H - 16 * scale,
-      bottom:
-        player.y * H + 12 * scale
+      left: player.x * W - 8 * scale,
+      right: player.x * W + 8 * scale,
+      top: player.y * H - 16 * scale,
+      bottom: player.y * H + 12 * scale
     };
   }
 
@@ -998,11 +969,8 @@
     const x = rock.x * W;
     const y = rock.y * H;
 
-    const radius =
-      getNormalRockRadius();
-
-    const hitRadius =
-      radius * 0.70;
+    const radius = getNormalRockRadius();
+    const hitRadius = radius * 0.70;
 
     return {
       left: x - hitRadius,
@@ -1013,27 +981,20 @@
   }
 
   function getBigRockRect(rock) {
-    const laneWidth =
-      W / laneCount;
+    const laneWidth = W / laneCount;
 
     const left =
-      rock.startLane *
-        laneWidth +
+      rock.startLane * laneWidth +
       laneWidth * 0.10;
 
     const right =
-      (rock.endLane + 1) *
-        laneWidth -
+      (rock.endLane + 1) * laneWidth -
       laneWidth * 0.10;
 
     const height =
-      Math.min(
-        66,
-        H * 0.10
-      );
+      Math.min(66, H * 0.10);
 
-    const y =
-      rock.y * H;
+    const y = rock.y * H;
 
     return {
       left,
@@ -1047,14 +1008,10 @@
   }
 
   function getBigRockHitbox(rock) {
-    const rect =
-      getBigRockRect(rock);
+    const rect = getBigRockRect(rock);
 
     const padX =
-      Math.min(
-        14,
-        rect.width * 0.06
-      );
+      Math.min(14, rect.width * 0.06);
 
     const padY =
       rect.height * 0.18;
@@ -1092,8 +1049,7 @@
   }
 
   function updateObjects(dt) {
-    const speed =
-      settings().speed;
+    const speed = settings().speed;
 
     const laneWidth =
       1 / laneCount;
@@ -1105,9 +1061,7 @@
       );
 
     for (const star of stars) {
-      if (!star.active) {
-        continue;
-      }
+      if (!star.active) continue;
 
       star.y += speed * dt;
 
@@ -1170,9 +1124,7 @@
     }
 
     for (const rock of rocks) {
-      if (!rock.active) {
-        continue;
-      }
+      if (!rock.active) continue;
 
       rock.y += speed * dt;
 
@@ -1455,11 +1407,7 @@
       number.textContent =
         `LV.${i}`;
 
-      node.append(
-        dot,
-        number
-      );
-
+      node.append(dot, number);
       levelMap.appendChild(node);
     }
 
@@ -1471,19 +1419,50 @@
     const rect =
       game.getBoundingClientRect();
 
+    const dpr =
+      Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
     W =
-      canvas.width =
-        Math.max(
-          1,
-          Math.floor(rect.width)
-        );
+      Math.max(
+        1,
+        Math.floor(rect.width)
+      );
 
     H =
-      canvas.height =
-        Math.max(
-          1,
-          Math.floor(rect.height)
-        );
+      Math.max(
+        1,
+        Math.floor(rect.height)
+      );
+
+    canvas.width =
+      Math.max(
+        1,
+        Math.floor(W * dpr)
+      );
+
+    canvas.height =
+      Math.max(
+        1,
+        Math.floor(H * dpr)
+      );
+
+    canvas.style.width =
+      `${W}px`;
+
+    canvas.style.height =
+      `${H}px`;
+
+    ctx.setTransform(
+      dpr,
+      0,
+      0,
+      dpr,
+      0,
+      0
+    );
 
     if (!dust.length) {
       for (
@@ -1555,7 +1534,7 @@
         dot.alpha;
 
       ctx.fillStyle =
-        "#fff";
+        "#ffffff";
 
       ctx.beginPath();
 
@@ -1678,7 +1657,7 @@
       "#fff3a6";
 
     ctx.strokeStyle =
-      "#fff";
+      "#ffffff";
 
     ctx.lineWidth = 1.2;
 
@@ -1716,16 +1695,6 @@
     ctx.stroke();
 
     ctx.restore();
-  }
-
-  function getNormalRockRadius() {
-    return Math.max(
-      13,
-      Math.min(
-        25,
-        (W / laneCount) * 0.14
-      )
-    );
   }
 
   function drawNormalRock(rock) {
@@ -1793,40 +1762,6 @@
     ctx.fill();
 
     ctx.restore();
-  }
-
-  function getBigRockRect(rock) {
-    const laneWidth =
-      W / laneCount;
-
-    const left =
-      rock.startLane *
-        laneWidth +
-      laneWidth * 0.10;
-
-    const right =
-      (rock.endLane + 1) *
-        laneWidth -
-      laneWidth * 0.10;
-
-    const height =
-      Math.min(
-        66,
-        H * 0.10
-      );
-
-    const y =
-      rock.y * H;
-
-    return {
-      left,
-      right,
-      top: y - height / 2,
-      bottom: y + height / 2,
-      width: right - left,
-      height,
-      y
-    };
   }
 
   function drawBigRock(rock) {
@@ -2063,9 +1998,7 @@
     ctx.restore();
 
     for (const particle of fireworks) {
-      if (particle.life <= 0) {
-        continue;
-      }
+      if (particle.life <= 0) continue;
 
       ctx.save();
 
@@ -2100,7 +2033,7 @@
 
     ctx.save();
 
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#ffffff";
     ctx.shadowColor = "#4ade80";
     ctx.shadowBlur = 30;
 
@@ -2226,7 +2159,7 @@
       );
 
       ctx.fillStyle =
-        "#fff";
+        "#ffffff";
 
       ctx.font =
         "900 27px sans-serif";
@@ -2459,9 +2392,7 @@
     updateWaves(dt);
     updateObjects(dt);
 
-    if (!running) {
-      return;
-    }
+    if (!running) return;
 
     hud();
     draw();
@@ -2484,9 +2415,7 @@
 
       event.preventDefault();
 
-      if (event.repeat) {
-        return;
-      }
+      if (event.repeat) return;
 
       if (
         event.key ===
